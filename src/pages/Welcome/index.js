@@ -34,16 +34,15 @@ export default class Welcome extends Component {
     const {username} = this.state;
     const {navigation} = this.props;
 
-    this.setState({loading: true, error: true});
+    this.setState({loading: true});
 
     try {
       await this.checkUserExists(username);
       await this.saveUser(username);
 
       navigation.navigate('Repositories');
-      console.tron.log(this.props.navigation);
     } catch (error) {
-      this.setState({loading: false});
+      this.setState({loading: false, error: true});
       console.tron.log(error);
     }
   };

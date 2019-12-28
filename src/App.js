@@ -1,21 +1,35 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import React, {Component} from 'react';
+import {AsyncStorage} from 'react-native';
 
-import Routes from './routes';
+import createNavigator from './routes';
 
 import './config/ReactotronConfig';
 
-const App = () => {
-  return <Routes />;
-};
+export default class App extends Component {
+  state = {
+    userChecked: false,
+    userLogged: false,
+  };
 
-const styles = StyleSheet.create({});
+  async componentDidMount() {
+    const username = await AsyncStorage.getItem('@Githuber:username');
 
-export default App;
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({
+      userChecked: true,
+      userLogged: !!username,
+    });
+  }
+
+  render() {
+    const {userChecked, userLogged} = this.state;
+
+    if (!userChecked) {
+      return null;
+    }
+
+    const Routes = createNavigator(userLogged);
+
+    return <Routes />;
+  }
+}
