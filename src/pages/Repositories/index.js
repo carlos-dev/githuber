@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, AsyncStorage, ActivityIndicator} from 'react-native';
-import PropTypes from 'prop-types';
+import {View, AsyncStorage, ActivityIndicator, FlatList} from 'react-native';
 
 import api from '../../services/api';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Header from '../../components/header';
+import RepositoryItem from './RepositoryItem';
 
 import styles from './styles';
 
@@ -24,13 +24,24 @@ export default class Repositories extends Component {
     this.setState({data, loading: false});
   }
 
-  renderList = () => <Text>lista</Text>;
+  renderListItem = ({item}) => <RepositoryItem repository={item} />;
+
+  renderList = () => {
+    const {data} = this.state;
+    return (
+      <FlatList
+        data={data}
+        keyExtractor={item => String(item.id)}
+        renderItem={this.renderListItem}
+      />
+    );
+  };
 
   render() {
     const {loading} = this.state;
 
     return (
-      <View>
+      <View style={styles.container}>
         <Header title="Repositórios" />
         {loading ? (
           <ActivityIndicator style={styles.loading} />
