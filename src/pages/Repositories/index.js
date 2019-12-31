@@ -2,9 +2,11 @@ import React from 'react';
 
 import {View, Text} from 'react-native';
 
+import Header from '../../components/header';
+
 const Repositories = () => (
   <View>
-    <Text>oi</Text>
+    <Header title="Repositórios" />
   </View>
 );
 
